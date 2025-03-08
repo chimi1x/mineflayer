@@ -1,60 +1,48 @@
 const mineflayer = require('mineflayer');
 
 // Configuration
-const config = {
+const bot = mineflayer.createBot({
   username: 'testbot', // Bot username
-  password: '',        // Bot password (leave empty for offline mode)
   host: 'chimi1x.aternos.me', // Server IP
-  port: 42898,         // Server port
-  version: '1.16.1'     // Minecraft version
-};
-
-// Create the bot
-const bot = mineflayer.createBot(config);
+  port: 42898, // Server port
+  version: '1.16.1' // Minecraft version
+});
 
 // Bot events
 bot.on('login', () => {
   console.log('Bot has logged in!');
 });
 
-bot.on('chat', (username, message) => {
-  if (username !== bot.username) {
-    console.log(`<${username}> ${message}`);
-  }
-});
-
+// Handle errors
 bot.on('error', (err) => {
   console.error('Error:', err);
 });
 
+// Handle disconnections
 bot.on('end', () => {
-  console.log('Bot has disconnected. Reconnecting...');
+  console.log('Bot has disconnected. Reconnecting in 5 seconds...');
   setTimeout(() => {
-    bot = mineflayer.createBot(config);
-  }, 5000); // Auto-reconnect after 5 seconds
+    createBot(); // Reconnect after 5 seconds
+  }, 5000);
 });
 
-// Anti-AFK (sneak every 30 seconds)
+// Sneak every 10 seconds
 setInterval(() => {
-  if (bot.antiAfk.enabled) {
-    bot.setControlState('sneak', true);
-    setTimeout(() => {
-      bot.setControlState('sneak', false);
-    }, 1000);
-  }
-}, 30000);
+  bot.setControlState('sneak', true); // Start sneaking
+  console.log('Bot is sneaking...');
 
-// Chat messages (repeat every 60 seconds)
-const messages = [
-  '69',
-  'chimi is the best!',
-  'I Like to Play sixUwU'
-];
+  setTimeout(() => {
+    bot.setControlState('sneak', false); // Stop sneaking after 1 second
+    console.log('Bot stopped sneaking.');
+  }, 1000); // Sneak for 1 second
+}, 10000); // Repeat every 10 seconds
 
-let messageIndex = 0;
+// Jump every 5 seconds
 setInterval(() => {
-  if (bot.chatMessages.enabled) {
-    bot.chat(messages[messageIndex]);
-    messageIndex = (messageIndex + 1) % messages.length;
-  }
-}, 60000);
+  bot.setControlState('jump', true); // Jump
+  console.log('Bot is jumping!');
+
+  setTimeout(() => {
+    bot.setControlState('jump', false); // Stop jumping
+  }, 500); // Jump for 0.5 seconds
+}, 5000); // Repeat every 5 seconds
