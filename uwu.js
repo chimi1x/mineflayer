@@ -3,9 +3,9 @@ const mineflayer = require('mineflayer');
 // Configuration
 const bot = mineflayer.createBot({
   username: 'UwU', // Bot username
-  host: '69test.aternos.me', // Server IP
-  port: 41082, // Server port
-  version: '1.12.2' // Minecraft version
+  host: 'Chimi1x.aternos.me', // Server IP
+  port: 42898, // Server port
+  version: '1.16.1' // Minecraft version
 });
 
 // Bot events
